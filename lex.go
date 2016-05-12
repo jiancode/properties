@@ -197,9 +197,14 @@ func lexBeforeKey(l *lexer) stateFn {
 
 	case isWhitespace(r):
 		l.acceptRun(whitespace)
-		l.ignore()
-		return lexKey
-
+        // fix the line only have space string 
+        if isEOL(l.peek()) {
+		    l.ignore()
+            return lexBeforeKey
+        } else {
+		    l.ignore()
+		    return lexKey
+        }
 	default:
 		l.backup()
 		return lexKey
